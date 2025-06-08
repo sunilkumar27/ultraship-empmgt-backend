@@ -34,6 +34,9 @@ logging:
   level:
     com.example.employeemanagement: INFO
     org.springframework.security: WARN
+    org.flywaydb.core.internal.database: DEBUG
+    org.springframework.boot.autoconfigure.flyway: DEBUG
+
 
 management:
   endpoints:
