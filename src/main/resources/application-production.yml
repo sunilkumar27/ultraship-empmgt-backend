@@ -34,3 +34,9 @@ logging:
   level:
     com.example.employeemanagement: INFO
     org.springframework.security: WARN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
