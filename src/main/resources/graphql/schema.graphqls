@@ -1,0 +1,143 @@
+# src/main/resources/graphql/schema.graphqls
+
+scalar Date
+scalar DateTime
+
+type Query {
+    employees(
+        page: Int = 0
+        size: Int = 10
+        sort: [SortInput!]
+        filter: EmployeeFilter
+    ): EmployeePage!
+
+    employee(id: ID!): Employee
+
+    subjects(
+        page: Int = 0
+        size: Int = 10
+    ): SubjectPage!
+}
+
+type Mutation {
+    login(input: LoginInput!): AuthResponse!
+    refreshToken(token: String!): AuthResponse!
+    
+    createEmployee(input: CreateEmployeeInput!): Employee!
+    updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
+    deleteEmployee(id: ID!): Boolean!
+    
+    markAttendance(employeeId: ID!, input: AttendanceInput!): Attendance!
+}
+
+type AuthResponse {
+    accessToken: String!
+    refreshToken: String!
+    tokenType: String!
+}
+
+type Employee {
+    id: ID!
+    name: String!
+    age: Int!
+    className: String
+    subjects: [Subject!]!
+    attendance: [Attendance!]!
+    role: Role!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Subject {
+    id: ID!
+    name: String!
+}
+
+type Attendance {
+    id: ID!
+    date: Date!
+    status: AttendanceStatus!
+    employee: Employee!
+}
+
+type EmployeePage {
+    content: [Employee!]!
+    totalElements: Int!
+    totalPages: Int!
+    number: Int!
+    size: Int!
+    empty: Boolean!
+    first: Boolean!
+    last: Boolean!
+}
+
+type SubjectPage {
+    content: [Subject!]!
+    totalElements: Int!
+    totalPages: Int!
+    number: Int!
+    size: Int!
+    empty: Boolean!
+    first: Boolean!
+    last: Boolean!
+}
+
+input LoginInput {
+    username: String!
+    password: String!
+}
+
+input CreateEmployeeInput {
+    name: String!
+    age: Int!
+    className: String
+    subjectIds: [ID!]
+    role: Role
+}
+
+input UpdateEmployeeInput {
+    name: String
+    age: Int
+    className: String
+    subjectIds: [ID!]
+    role: Role
+}
+
+input AttendanceInput {
+    date: Date!
+    status: AttendanceStatus!
+}
+
+input EmployeeFilter {
+    name: String
+    age: IntRange
+    className: String
+    role: Role
+}
+
+input IntRange {
+    min: Int
+    max: Int
+}
+
+input SortInput {
+    field: String!
+    direction: SortDirection!
+}
+
+enum Role {
+    ADMIN
+    EMPLOYEE
+}
+
+enum AttendanceStatus {
+    PRESENT
+    ABSENT
+    LATE
+    EXCUSED
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
