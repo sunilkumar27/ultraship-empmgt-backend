@@ -10,13 +10,13 @@ import jakarta.annotation.PostConstruct;
 @ComponentScan(basePackages = "com.example.employeemanagement")
 public class EmployeeManagementApplication {
 
+    static {
+        System.out.println(">> ENV CHECK: DATABASE_URL = " + System.getenv("DATABASE_URL"));
+        System.out.println(">> ENV CHECK: SPRING_PROFILES_ACTIVE = " + System.getenv("SPRING_PROFILES_ACTIVE"));
+    }
+
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeManagementApplication.class, args);
 	}
-
-	@PostConstruct
-    public void checkEnv() {
-        System.out.println(">> DATABASE_URL: " + System.getenv("DATABASE_URL"));
-    }
 
 }
